@@ -23,7 +23,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 // We connect the second signal of the encoder to pin 4.
 // int.1 is free for other use.
 int in_a = 2;
-int in_b = 4;
+int in_b = 3;
 
 // The number of pulses per revolution
 // depends on your index disc!!
@@ -94,7 +94,7 @@ void setup() {
 
 void loop() {
   
-  distance = (pulses * 20) / 10; // 5  pulses per centimetre
+  distance = (pulses * 107) / 58; // 5  pulses per centimetre
   
   //int a = digitalRead(in_a);
   //int b = digitalRead(in_b);
