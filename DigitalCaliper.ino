@@ -81,6 +81,7 @@ void setup() {
   pinMode(in_a, INPUT);
   pinMode(in_b, INPUT);
   
+  attachInterrupt(digitalPinToInterrupt(in_b), countB, FALLING);
   attachInterrupt(digitalPinToInterrupt(in_a), count, FALLING);
   
   /*
