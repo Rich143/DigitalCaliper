@@ -84,12 +84,12 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(in_b), countB, FALLING);
   attachInterrupt(digitalPinToInterrupt(in_a), count, FALLING);
   
-  /*
+  
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
   lcd.setBacklight(BLUE);
-  lcd.print("Pulses: ");
-  */
+  lcd.print("Distance: ");
+  
 }
 
 void loop() {
@@ -113,8 +113,9 @@ void loop() {
   Serial.print(" distance: ");
   Serial.println(distance);
   
- // lcd.setCursor(8,0);
-  //lcd.print(pulses);
+  lcd.setBacklight(random(1,8));
+  lcd.setCursor(10,0);
+  lcd.print(distance);
   
   delay(500);
   
