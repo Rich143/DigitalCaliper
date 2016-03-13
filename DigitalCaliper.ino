@@ -23,7 +23,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 // We connect the second signal of the encoder to pin 4.
 // int.1 is free for other use.
 int in_a = 2;
-int in_b = 4;
+int in_b = 3;
 
 // The number of pulses per revolution
 // depends on your index disc!!
@@ -81,19 +81,20 @@ void setup() {
   pinMode(in_a, INPUT);
   pinMode(in_b, INPUT);
   
+  attachInterrupt(digitalPinToInterrupt(in_b), countB, FALLING);
   attachInterrupt(digitalPinToInterrupt(in_a), count, FALLING);
   
-  /*
+  
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
   lcd.setBacklight(BLUE);
-  lcd.print("Pulses: ");
-  */
+  lcd.print("Distance: ");
+  
 }
 
 void loop() {
   
-  distance = (pulses * 107) / 29; // 3.68 pulses per centimetre
+  distance = (pulses * 107) / 58; // 5  pulses per centimetre
   
   //int a = digitalRead(in_a);
   //int b = digitalRead(in_b);
@@ -105,13 +106,16 @@ void loop() {
   
   Serial.print("ints: ");
   Serial.print(numInterrupts);
+  Serial.print(" intB: ");
+  Serial.print(numBInterrupts);
   Serial.print(" pulses: ");
   Serial.print(pulses);
   Serial.print(" distance: ");
   Serial.println(distance);
   
- // lcd.setCursor(8,0);
-  //lcd.print(pulses);
+  lcd.setBacklight(random(1,8));
+  lcd.setCursor(10,0);
+  lcd.print(distance);
   
   delay(500);
   
