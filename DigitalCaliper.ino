@@ -93,7 +93,7 @@ void setup() {
 
 void loop() {
   
-  distance = (pulses * 20) / 5; // 2.5 pulses per centimetre
+  distance = (pulses * 107) / 29; // 3.68 pulses per centimetre
   
   //int a = digitalRead(in_a);
   //int b = digitalRead(in_b);
