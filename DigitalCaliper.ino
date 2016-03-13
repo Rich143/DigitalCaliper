@@ -106,6 +106,8 @@ void loop() {
   
   Serial.print("ints: ");
   Serial.print(numInterrupts);
+  Serial.print(" intB: ");
+  Serial.print(numBInterrupts);
   Serial.print(" pulses: ");
   Serial.print(pulses);
   Serial.print(" distance: ");
