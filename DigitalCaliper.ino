@@ -93,8 +93,9 @@ void setup() {
 }
 
 void loop() {
-  
-  distance = (pulses * 107) / 58; // 5  pulses per centimetre
+
+  // Convert Pulses to millimetres. Conversion factor experimentally determined
+  distance = (pulses * 107) / 58; 
   
   //int a = digitalRead(in_a);
   //int b = digitalRead(in_b);
