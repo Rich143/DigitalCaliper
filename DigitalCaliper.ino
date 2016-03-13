@@ -92,32 +92,51 @@ void setup() {
   
 }
 
+unsigned long lastPrint = 0;
+int printDelay = 500;
+
 void loop() {
 
-  // Convert Pulses to millimetres. Conversion factor experimentally determined
-  distance = (pulses * 107) / 58; 
+  if (millis() - printDelay > lastPrint) {
+    // Convert Pulses to millimetres. Conversion factor experimentally determined
+    distance = (pulses * 107) / 58; 
+    
+    //int a = digitalRead(in_a);
+    //int b = digitalRead(in_b);
+    
+    //Serial.print("A=");
+    //Serial.println(a?"High":"Low");
+    //Serial.print(" B=");
+    //Serial.println(b?"High":"Low");
+    
+    Serial.print("ints: ");
+    Serial.print(numInterrupts);
+    Serial.print(" intB: ");
+    Serial.print(numBInterrupts);
+    Serial.print(" pulses: ");
+    Serial.print(pulses);
+    Serial.print(" distance: ");
+    Serial.println(distance);
+    
+    lcd.setBacklight(random(1,8));
+    lcd.setCursor(10,0);
+    lcd.print("       ");
+    lcd.setCursor(10,0);
+    lcd.print(distance);
+    lcd.print(" mm");
+    
+    lastPrint = millis();
+  }
   
-  //int a = digitalRead(in_a);
-  //int b = digitalRead(in_b);
+  uint8_t buttons = lcd.readButtons();
   
-  //Serial.print("A=");
-  //Serial.println(a?"High":"Low");
-  //Serial.print(" B=");
-  //Serial.println(b?"High":"Low");
-  
-  Serial.print("ints: ");
-  Serial.print(numInterrupts);
-  Serial.print(" intB: ");
-  Serial.print(numBInterrupts);
-  Serial.print(" pulses: ");
-  Serial.print(pulses);
-  Serial.print(" distance: ");
-  Serial.println(distance);
-  
-  lcd.setBacklight(random(1,8));
-  lcd.setCursor(10,0);
-  lcd.print(distance);
-  
-  delay(500);
-  
+  if (buttons & BUTTON_SELECT) {
+    lcd.clear();
+    lcd.print("Distance: ");
+
+    distance = 0;
+    pulses = 0;
+    numInterrupts = 0;
+    numBInterrupts = 0;
+  }
 }
