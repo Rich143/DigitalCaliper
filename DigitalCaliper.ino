@@ -27,62 +27,92 @@ int in_b = 4;
 
 // The number of pulses per revolution
 // depends on your index disc!!
-unsigned int pulsesperturn = 36;
+unsigned int pulsesperturn = 32;
+unsigned int pulsespercentimetre = 3;
 
 // The total number of revolutions
-int revolutions = 0;
+int distance = 0;
 
 // Initialize the counter
 volatile int pulses = 0;
 volatile int numInterrupts = 0;
+volatile int numBInterrupts = 0;
+
+volatile unsigned long lastTrigger = 0;
+volatile unsigned long lastBTrigger = 0;
+
+#define debounceTime 5 // debounce time in microseconds
 
 void count() {
   // This function is called by the interrupt
   // If in_b is HIGH increment the counter
   // otherwise decrement it
-  _delay_ms(100);
-  if (digitalRead(in_a)) {
+  if (micros() - lastTrigger > debounceTime) {
     numInterrupts++;
 
     if (digitalRead(in_b)) {
+      pulses--;
+    }
+    else {
+      pulses++;
+    }
+  }
+  
+  lastTrigger = micros();
+}
+
+void countB() {
+  if (micros() - lastBTrigger > debounceTime) {
+    numBInterrupts++;
+    
+    if (digitalRead(in_a)) {
       pulses++;
     }
     else {
       pulses--;
     }
   }
+  
+  lastBTrigger = micros();
 }
 
 void setup() {
   Serial.begin(9600);
   pinMode(in_a, INPUT);
   pinMode(in_b, INPUT);
-  attachInterrupt(digitalPinToInterrupt(in_a), count, RISING);
   
+  attachInterrupt(digitalPinToInterrupt(in_a), count, FALLING);
+  
+  /*
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
   lcd.setBacklight(BLUE);
   lcd.print("Pulses: ");
+  */
 }
 
 void loop() {
-  /*
-  revolutions = pulses / pulsesperturn
-  */
+  
+  distance = (pulses * 20) / 5; // 2.5 pulses per centimetre
+  
   //int a = digitalRead(in_a);
   //int b = digitalRead(in_b);
-  /*
-  Serial.print("A=");
-  Serial.print(a?"High":"Low");
-  Serial.print(" B=");
-  Serial.println(b?"High":"Low");
-  */
+  
+  //Serial.print("A=");
+  //Serial.println(a?"High":"Low");
+  //Serial.print(" B=");
+  //Serial.println(b?"High":"Low");
+  
   Serial.print("ints: ");
   Serial.print(numInterrupts);
-  Serial.print("pulses: ");
-  Serial.println(pulses);
+  Serial.print(" pulses: ");
+  Serial.print(pulses);
+  Serial.print(" distance: ");
+  Serial.println(distance);
   
-  lcd.setCursor(8,0);
-  lcd.print(pulses);
+ // lcd.setCursor(8,0);
+  //lcd.print(pulses);
+  
   delay(500);
+  
 }
